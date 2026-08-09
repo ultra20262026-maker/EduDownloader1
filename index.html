@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduDownloader | مستر محمود الزيادي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Premium Color Palette */
+            --primary: #6366f1; /* Indigo */
+            --secondary: #ec4899; /* Pink */
+            --accent: #8b5cf6; /* Violet */
+            --success: #10b981; /* Emerald */
+            --bg-color: #0f172a; /* Slate 900 */
+            
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-highlight: rgba(255, 255, 255, 0.05);
+            
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            
+            --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background Gradient */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(
+                -45deg, 
+                #0f172a, 
+                #1e1b4b, 
+                #31113b, 
+                #172554
+            );
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Shapes */
+        .shape {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            animation: float 10s ease-in-out infinite alternate;
+        }
+        .shape-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: -100px;
+            right: -100px;
+            opacity: 0.4;
+        }
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            bottom: -150px;
+            left: -150px;
+            opacity: 0.3;
+            animation-delay: -5s;
+        }
+        .shape-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--accent);
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.2;
+            animation-duration: 15s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-50px) scale(1.1); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            padding: 2rem;
+            margin-top: 3rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #818cf8, #c084fc, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 10px 30px rgba(192, 132, 252, 0.3);
+            letter-spacing: -1px;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            border-left: 1px solid rgba(255,255,255,0.2);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 1px var(--glass-highlight);
+            animation: fadeIn 1s ease-out 0.3s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle reflection effect */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 100%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .input-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 1.2rem 3rem 1.2rem 1.5rem;
+            background: rgba(15, 23, 42, 0.5);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3), inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        input[type="text"]:focus + i {
+            color: var(--primary);
+        }
+
+        button {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 20px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            white-space: nowrap;
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #475569;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.7;
+        }
+
+        .loader {
+            display: none;
+            margin: 2rem auto;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--secondary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #resultArea {
+            display: none;
+            margin-top: 2rem;
+            animation: expandFade 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes expandFade {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .video-info {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .video-info:hover {
+            transform: translateX(-5px);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .video-thumbnail {
+            width: 220px;
+            border-radius: 14px;
+            object-fit: cover;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .video-details h3 {
+            margin: 0 0 0.8rem 0;
+            font-size: 1.4rem;
+            line-height: 1.4;
+            color: #fff;
+        }
+
+        .video-details p {
+            margin: 0;
+            color: var(--secondary);
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .btn-audio {
+            background: linear-gradient(135deg, #ec4899, #f43f5e);
+            box-shadow: 0 10px 20px rgba(236, 72, 153, 0.3);
+        }
+
+        .btn-audio:hover {
+            box-shadow: 0 15px 30px rgba(236, 72, 153, 0.4);
+        }
+
+        .progress-container {
+            display: none;
+            margin-top: 2.5rem;
+            background: rgba(0,0,0,0.2);
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.5);
+            position: relative;
+        }
+        
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        #progressStatus {
+            color: var(--text-main);
+        }
+
+        #progressPercent {
+            color: var(--secondary);
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        /* Beautiful Footer */
+        footer {
+            margin-top: auto;
+            padding: 2rem;
+            text-align: center;
+            width: 100%;
+            background: linear-gradient(to top, rgba(15,23,42,0.8), transparent);
+            animation: fadeIn 1s ease-out 0.8s both;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-text {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .heart {
+            color: var(--secondary);
+            animation: beat 1.5s ease infinite;
+            display: inline-block;
+        }
+
+        @keyframes beat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .author-name {
+            background: linear-gradient(to right, #818cf8, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            font-size: 1.4rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            .input-group { flex-direction: column; }
+            button { width: 100%; justify-content: center; }
+            .video-info { flex-direction: column; text-align: center; }
+            .action-buttons { grid-template-columns: 1fr; }
+            .glass-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-animation"></div>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+
+    <div class="container">
+        <header>
+            <h1>EduDownloader</h1>
+            <p>أداة ذكية لتحميل الفيديوهات وقوائم التشغيل بأعلى جودة</p>
+        </header>
+
+        <div class="glass-card">
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <input type="text" id="urlInput" placeholder="ضع رابط الفيديو أو القائمة هنا...">
+                    <i class="fa-solid fa-link"></i>
+                </div>
+                <button id="analyzeBtn" onclick="analyzeUrl()">
+                    <i class="fa-solid fa-magnifying-glass"></i> تحليل الرابط
+                </button>
+            </div>
+            
+            <div class="loader" id="mainLoader"></div>
+            
+            <div id="errorArea" style="color: #f87171; display: none; margin-bottom: 1.5rem; text-align: center; background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.2);"></div>
+
+            <div id="resultArea">
+                <div class="video-info">
+                    <img id="videoThumb" class="video-thumbnail" src="" alt="Thumbnail">
+                    <div class="video-details">
+                        <h3 id="videoTitle">عنوان الفيديو</h3>
+                        <p><i class="fa-solid fa-user-circle"></i> <span id="videoUploader">القناة</span></p>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button onclick="startDownload('video')" id="btnVideo">
+                        <i class="fa-solid fa-video"></i> تحميل فيديو (MP4)
+                    </button>
+                    <button onclick="startDownload('audio')" class="btn-audio" id="btnAudio">
+                        <i class="fa-solid fa-music"></i> تحميل صوت (MP3)
+                    </button>
+                </div>
+
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="progressBar"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="progressStatus">جاري التجهيز...</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                </div>
+
+                <div id="successActions" style="display: none; margin-top: 1.5rem; text-align: center; display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Removed manual buttons to make it fully automatic -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-text">
+            <span>صُنع بكل </span>
+            <i class="fa-solid fa-heart heart"></i>
+            <span> لمعلمي مصر | </span>
+            <span class="author-name">مستر محمود الزيادي</span>
+        </div>
+    </footer>
+
+    <script>
+        let currentUrl = '';
+        let currentTaskId = null;
+        let progressInterval = null;
+
+        async function analyzeUrl() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) return;
+
+            currentUrl = url;
+            const btn = document.getElementById('analyzeBtn');
+            const loader = document.getElementById('mainLoader');
+            const resultArea = document.getElementById('resultArea');
+            const errorArea = document.getElementById('errorArea');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحليل...';
+            loader.style.display = 'block';
+            resultArea.style.display = 'none';
+            errorArea.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    if (data.type === 'playlist') {
+                        document.getElementById('videoTitle').innerHTML = `<i class="fa-solid fa-list text-primary"></i> قائمة تشغيل: ${data.title} <br><small style="color:var(--text-muted); font-size: 1rem;">(${data.count} فيديو)</small>`;
+                    } else {
+                        document.getElementById('videoTitle').textContent = data.title;
+                    }
+                    document.getElementById('videoUploader').textContent = data.uploader;
+                    if(data.thumbnail) {
+                        document.getElementById('videoThumb').src = data.thumbnail;
+                    }
+                    resultArea.style.display = 'block';
+                } else {
+                    errorArea.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> خطأ: ' + (data.error || 'فشل تحليل الرابط');
+                    errorArea.style.display = 'block';
+                }
+            } catch (error) {
+                errorArea.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> حدث خطأ في الاتصال بالخادم';
+                errorArea.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> تحليل الرابط';
+                loader.style.display = 'none';
+            }
+        }
+
+        async function startDownload(format) {
+            const btnVideo = document.getElementById('btnVideo');
+            const btnAudio = document.getElementById('btnAudio');
+            const progressContainer = document.getElementById('progressContainer');
+            const errorArea = document.getElementById('errorArea');
+            const successActions = document.getElementById('successActions');
+
+            btnVideo.disabled = true;
+            btnAudio.disabled = true;
+            errorArea.style.display = 'none';
+            if (successActions) successActions.style.display = 'none';
+            progressContainer.style.display = 'block';
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('progressPercent').textContent = '0%';
+            document.getElementById('progressStatus').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري طلب التحميل...';
+
+            try {
+                const response = await fetch('/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: currentUrl, format: format })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    currentTaskId = data.task_id;
+                    progressInterval = setInterval(checkProgress, 1000);
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                errorArea.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> فشل بدء التحميل: ' + error.message;
+                errorArea.style.display = 'block';
+                btnVideo.disabled = false;
+                btnAudio.disabled = false;
+                progressContainer.style.display = 'none';
+            }
+        }
+
+        async function checkProgress() {
+            if (!currentTaskId) return;
+
+            try {
+                const response = await fetch('/api/status/' + currentTaskId);
+                const data = await response.json();
+
+                if (response.ok) {
+                    const percent = data.progress || 0;
+                    document.getElementById('progressBar').style.width = percent + '%';
+                    document.getElementById('progressPercent').textContent = percent + '%';
+                    
+                    if (data.status === 'downloading') {
+                        if (data.current_file) {
+                            document.getElementById('progressStatus').innerHTML = `<i class="fa-solid fa-cloud-arrow-down"></i> جاري التحميل... <span style="font-size:0.8rem; color:var(--text-muted);">(${data.current_file})</span>`;
+                        } else {
+                            document.getElementById('progressStatus').innerHTML = '<i class="fa-solid fa-cloud-arrow-down"></i> جاري التحميل...';
+                        }
+                    } else if (data.status === 'completed_all') {
+                        clearInterval(progressInterval);
+                        document.getElementById('progressStatus').innerHTML = '<i class="fa-solid fa-check-circle"></i> تم التحميل بنجاح! جاري التنزيل تلقائياً...';
+                        document.getElementById('progressStatus').style.color = 'var(--success)';
+                        document.getElementById('progressBar').style.background = 'var(--success)';
+                        document.getElementById('progressBar').style.boxShadow = '0 0 15px rgba(16, 185, 129, 0.5)';
+                        document.getElementById('btnVideo').disabled = false;
+                        document.getElementById('btnAudio').disabled = false;
+                        
+                        // Automatically trigger download
+                        window.location.href = '/api/download-file/' + currentTaskId;
+                    } else if (data.status === 'error') {
+                        clearInterval(progressInterval);
+                        document.getElementById('progressStatus').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> فشل التحميل: ' + data.error;
+                        document.getElementById('progressStatus').style.color = '#ef4444';
+                        document.getElementById('progressBar').style.background = '#ef4444';
+                        document.getElementById('btnVideo').disabled = false;
+                        document.getElementById('btnAudio').disabled = false;
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking progress', error);
+            }
+        }
+
+    </script>
+</body>
+</html>
